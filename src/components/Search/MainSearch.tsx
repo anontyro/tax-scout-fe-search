@@ -29,9 +29,10 @@ const SearchInput = styled.input`
   font-weight: 500;
   color: #333;
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
+  background-color: #e3e3e3;
+  border-radius: 2px;
   &:focus {
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
   }
@@ -51,16 +52,18 @@ const BookLoadPlaceholder: React.FC = () => {
 };
 
 interface MainSearchResultsProps {
+  style: React.CSSProperties;
   setReference: (ref: HTMLDivElement | null) => void;
 }
 
 const MainSearchResults: React.FC<MainSearchResultsProps> = ({
+  style,
   setReference,
 }) => {
   const isLoading = useAppSelector(isBookLoading);
   const currentBook = useAppSelector(findCurrentBook);
   return (
-    <MainSearchResultsContainer ref={setReference}>
+    <MainSearchResultsContainer style={style} ref={setReference}>
       {isLoading ? (
         <BookLoadPlaceholder />
       ) : (
@@ -87,7 +90,7 @@ const MainSearch: React.FC = () => {
     null
   );
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "bottom-start",
+    placement: "bottom",
   });
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -104,14 +107,17 @@ const MainSearch: React.FC = () => {
     <>
       <SearchContainer>
         <SearchInput
-          ref={setPopperElement}
+          ref={setReferenceElement}
           value={searchQuery}
           onChange={handleSearchQuery}
           {...attributes.popper}
         />
       </SearchContainer>
       {isResultsVisible && (
-        <MainSearchResults setReference={setReferenceElement} />
+        <MainSearchResults
+          style={styles.popper}
+          setReference={setPopperElement}
+        />
       )}
     </>
   );

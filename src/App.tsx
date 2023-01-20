@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MainSearch from "./components/Search/MainSearch";
+import MainNav from "./components/NavBar/MainNav";
 
 const MainContentContainer = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const MainContentContainer = styled.div`
 const App: React.FC = () => {
   return (
     <MainContentContainer>
-      <MainSearch />
+      <MainNav />
     </MainContentContainer>
   );
 };
