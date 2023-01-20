@@ -9,13 +9,6 @@ export interface OpenLibraryISBN {
 export interface OpenLibraryISBNResponse {
   [key: string]: OpenLibraryISBN;
 }
-
-//   bib_key: string;
-//   info_url: "https://openlibrary.org/books/OL1017798M/The_adventures_of_Tom_Sawyer";
-//   preview: "borrow";
-//   preview_url: "https://archive.org/details/adventuresoftoms0000twai_x3x4";
-//   thumbnail_url: "https://covers.openlibrary.org/b/id/11403183-S.jpg";
-
 interface BookObjectKeys {
   key: string;
 }
