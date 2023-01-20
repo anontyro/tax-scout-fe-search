@@ -14,3 +14,7 @@ export const createBookDataUrl = (openLibraryISBN: OpenLibraryISBN) => {
 
   return `${urlValue}.json`;
 };
+
+export const makeAmazonUrl = (isbn: string) => {
+  return `https://www.amazon.com/s?k=${isbn}`;
+};

@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { BookItem } from "../../types/OpenLibrary";
+import { makeAmazonUrl } from "../../utils/bookSearchUtils";
 import { getBookData, getBookInfoByISBN } from "./bookSearchAPI";
 
 export interface BookSearchState {
   isLoading: boolean;
+  currentBook?: string;
   books: {
     [key: string]: BookItem;
   };
@@ -12,6 +14,7 @@ export interface BookSearchState {
 
 const initialState: BookSearchState = {
   isLoading: false,
+  currentBook: undefined,
   books: {},
 };
 
@@ -22,6 +25,7 @@ export const getBookAsync = createAsyncThunk<
 >("bookSearch/getBookData", async (isbn: string, thunkAPI) => {
   const state = thunkAPI.getState();
   const book = state.bookSearch.books[isbn];
+  thunkAPI.dispatch(clearCurrentBook);
 
   if (book) {
     return book;
@@ -35,13 +39,24 @@ export const getBookAsync = createAsyncThunk<
 
   const data = await getBookData(bookIsbnData);
 
-  return data;
+  return {
+    ...data,
+    thumbnail_url: bookIsbnData.thumbnail_url,
+    amazon_url: makeAmazonUrl(isbn),
+  };
 });
 
 export const bookSearchSlice = createSlice({
   name: "bookSearch",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentBook: (state, action) => {
+      state.currentBook = action.payload;
+    },
+    clearCurrentBook: (state) => {
+      state.currentBook = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getBookAsync.pending, (state) => {
@@ -50,6 +65,7 @@ export const bookSearchSlice = createSlice({
       .addCase(getBookAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         if (action.payload?.isbn_10) {
+          state.currentBook = action.payload.isbn_10[0];
           state.books[action.payload.isbn_10[0]] = action.payload;
         }
       })
@@ -58,5 +74,12 @@ export const bookSearchSlice = createSlice({
       });
   },
 });
+
+export const isBookLoading = (state: RootState) => state.bookSearch.isLoading;
+export const findCurrentBook = (state: RootState) => {
+  const currentBook = state.bookSearch.currentBook;
+  return currentBook ? state.bookSearch.books[currentBook] : undefined;
+};
+export const { setCurrentBook, clearCurrentBook } = bookSearchSlice.actions;
 
 export default bookSearchSlice.reducer;

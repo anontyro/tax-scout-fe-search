@@ -63,4 +63,6 @@ export interface BookItem {
   revision: number;
   created: BookTimeItem;
   last_modified: BookTimeItem;
+  thumbnail_url?: string;
+  amazon_url?: string;
 }
