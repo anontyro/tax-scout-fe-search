@@ -4,8 +4,6 @@ import styled from "styled-components";
 const BookItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
 `;
@@ -14,6 +12,7 @@ const BookItemContentContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+  padding: 10px;
 `;
 
 const BookItemFooter = styled.div`
@@ -22,6 +21,8 @@ const BookItemFooter = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 10px;
+  padding-top: 0;
 `;
 
 const BookItemBody = styled.div`
@@ -35,11 +36,26 @@ const BookImage = styled.img`
   border: none;
   outline: none;
   flex-grow: 0;
-  height: 8rem;
+  flex-shrink: 0;
+  height: 72px;
+  width: 72px;
+  margin-right: 18px;
 `;
+
+const BookHeader = styled.h3`
+  margin: 0 0 0.5rem 0;
+`;
+
+const BookParagraph = styled.p`
+  margin: 0 0 0.5rem 0;
+`;
+
 interface BookItemResult {
   book: BookItem | undefined;
 }
+
+const bookCover = (coverId: number) =>
+  `https://covers.openlibrary.org/b/id/${coverId}.jpg`;
 
 const BookItemResult: React.FC<BookItemResult> = ({ book }) => {
   if (!book) {
@@ -49,10 +65,10 @@ const BookItemResult: React.FC<BookItemResult> = ({ book }) => {
   return (
     <BookItemContainer>
       <BookItemContentContainer>
-        <BookImage src={book.thumbnail_url} />
+        <BookImage src={bookCover(book.covers[0])} />
         <BookItemBody>
-          <h3>{book.title}</h3>
-          <p>{book.by_statement}</p>
+          <BookHeader>{book.title}</BookHeader>
+          <BookParagraph>{book.by_statement}</BookParagraph>
         </BookItemBody>
       </BookItemContentContainer>
       <BookItemFooter>

@@ -25,7 +25,7 @@ export const getBookAsync = createAsyncThunk<
 >("bookSearch/getBookData", async (isbn: string, thunkAPI) => {
   const state = thunkAPI.getState();
   const book = state.bookSearch.books[isbn];
-  thunkAPI.dispatch(clearCurrentBook);
+  thunkAPI.dispatch(clearCurrentBook());
 
   if (book) {
     return book;
