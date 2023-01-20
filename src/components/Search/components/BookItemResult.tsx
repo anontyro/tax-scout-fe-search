@@ -50,14 +50,14 @@ const BookParagraph = styled.p`
   margin: 0 0 0.5rem 0;
 `;
 
-interface BookItemResult {
+interface BookItemResultProps {
   book: BookItem | undefined;
 }
 
 const bookCover = (coverId: number) =>
   `https://covers.openlibrary.org/b/id/${coverId}.jpg`;
 
-const BookItemResult: React.FC<BookItemResult> = ({ book }) => {
+const BookItemResult: React.FC<BookItemResultProps> = ({ book }) => {
   if (!book) {
     return <BookItemContainer>Book not found</BookItemContainer>;
   }

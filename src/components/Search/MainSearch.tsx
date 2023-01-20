@@ -47,14 +47,18 @@ const MainSearchResultsContainer = styled.div`
   max-width: 500px;
 `;
 
+const PopperArrow = styled.div``;
+
 interface MainSearchResultsProps {
   style: React.CSSProperties;
   setReference: (ref: HTMLDivElement | null) => void;
+  children?: React.ReactNode;
 }
 
 const MainSearchResults: React.FC<MainSearchResultsProps> = ({
   style,
   setReference,
+  children,
 }) => {
   const isLoading = useAppSelector(isBookLoading);
   const currentBook = useAppSelector(findCurrentBook);
@@ -65,6 +69,7 @@ const MainSearchResults: React.FC<MainSearchResultsProps> = ({
       ) : (
         <BookItemResult book={currentBook} />
       )}
+      {children}
     </MainSearchResultsContainer>
   );
 };
@@ -85,8 +90,18 @@ const MainSearch: React.FC = () => {
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
+  const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "bottom",
+    modifiers: [
+      {
+        name: "offset",
+        options: {
+          offset: [0, 8],
+        },
+      },
+      { name: "arrow", options: { element: arrowElement } },
+    ],
   });
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -103,6 +118,7 @@ const MainSearch: React.FC = () => {
     <>
       <SearchContainer>
         <SearchInput
+          data-testid="search-input"
           ref={setReferenceElement}
           value={searchQuery}
           onChange={handleSearchQuery}
@@ -113,7 +129,13 @@ const MainSearch: React.FC = () => {
         <MainSearchResults
           style={styles.popper}
           setReference={setPopperElement}
-        />
+        >
+          <PopperArrow
+            className="arrow"
+            ref={setArrowElement}
+            style={styles.arrow}
+          />
+        </MainSearchResults>
       )}
     </>
   );
