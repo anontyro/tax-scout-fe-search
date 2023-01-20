@@ -62,10 +62,18 @@ const BookItemResult: React.FC<BookItemResult> = ({ book }) => {
     return <BookItemContainer>Book not found</BookItemContainer>;
   }
 
+  const coverImg = book?.covers ? bookCover(book?.covers[0]) : undefined;
+
   return (
     <BookItemContainer>
       <BookItemContentContainer>
-        <BookImage src={bookCover(book.covers[0])} />
+        <BookImage
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src = book.thumbnail_url ?? "";
+          }}
+          src={coverImg}
+        />
         <BookItemBody>
           <BookHeader>{book.title}</BookHeader>
           <BookParagraph>{book.by_statement}</BookParagraph>

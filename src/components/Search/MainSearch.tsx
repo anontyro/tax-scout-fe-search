@@ -9,6 +9,7 @@ import {
 } from "../../features/bookSearch/bookSearchSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import BookItemResult from "./components/BookItemResult";
+import BookLoadPlaceholder from "./components/BookLoadPlaceholder";
 
 const SearchContainer = styled.div`
   display: flex;
@@ -45,71 +46,6 @@ const MainSearchResultsContainer = styled.div`
   width: 100%;
   max-width: 500px;
 `;
-
-const BookLoadContainer = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 10px;
-`;
-const BookLoadContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 0 10px;
-`;
-
-const BookPlaceHolderImage = styled.div`
-  width: 72px;
-  height: 72px;
-  background-color: #fff;
-  flex-shrink: 0;
-`;
-
-interface BookTextPlaceHolderProps {
-  width?: string;
-  height?: string;
-  marginBottom?: string;
-}
-
-const BookTextPlaceHolder = styled.div`
-  width: ${(props: BookTextPlaceHolderProps) => props.width || "100%"};
-  height: ${(props: BookTextPlaceHolderProps) => props.height || "18px"};
-  margin-bottom: ${(props: BookTextPlaceHolderProps) =>
-    props.marginBottom || "0.5rem"};
-  background-color: #c4c4c4;
-  animation: pulse 1.5s infinite;
-  @keyframes pulse {
-    0% {
-      background-color: #c4c4c4;
-    }
-    25% {
-      background-color: #b9b9b9;
-    }
-    50% {
-      background-color: #9d9d9d;
-    }
-    75% {
-      background-color: #b9b9b9;
-    }
-    100% {
-      background-color: #c4c4c4;
-    }
-  }
-`;
-
-export const BookLoadPlaceholder: React.FC = () => {
-  return (
-    <BookLoadContainer>
-      <BookPlaceHolderImage />
-      <BookLoadContentContainer>
-        <BookTextPlaceHolder marginBottom="15px" />
-        <BookTextPlaceHolder height="9px" width="60%" />
-        <BookTextPlaceHolder height="9px" width="60%" />
-        <BookTextPlaceHolder height="9px" width="30%" />
-      </BookLoadContentContainer>
-    </BookLoadContainer>
-  );
-};
 
 interface MainSearchResultsProps {
   style: React.CSSProperties;
